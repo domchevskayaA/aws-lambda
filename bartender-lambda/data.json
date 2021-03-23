@@ -1,0 +1,59 @@
+[
+    {
+        "size": "short",
+        "liquor": "vodka",
+        "taste": "sweet",
+        "name": "White russian",
+        "alcohol": "strong"
+    },
+    {
+        "size": "long",
+        "liquor": "white rum",
+        "taste": "sweet",
+        "name": "Mojito",
+        "alcohol": "light"
+    },
+    {
+        "size": "short",
+        "liquor": "vodka",
+        "taste": "sweet",
+        "name": "Cosmopolitan",
+        "alcohol": "strong"
+    },
+    {
+        "size": "short",
+        "liquor": "gin",
+        "taste": "bitter",
+        "name": "Gin and tonic",
+        "alcohol": "strong"
+    },
+    {
+        "size": "long",
+        "liquor": "aperol",
+        "taste": "bitter",
+        "id": "gmbctniam",
+        "name": "Aperol spritz",
+        "alcohol": "light"
+    },
+    {
+        "size": "short",
+        "liquor": "gin",
+        "taste": "bitter",
+        "name": "Negroni",
+        "alcohol": "strong"
+    },
+    {
+        "size": "long",
+        "liquor": "white rum",
+        "taste": "sweet",
+        "name": "Pina colada",
+        "alcohol": "light"
+    },
+    {
+        "size": "short",
+        "liquor": "gin, vodka",
+        "taste": "bitter",
+        "name": "Martini",
+        "alcohol": "strong"
+    }
+]

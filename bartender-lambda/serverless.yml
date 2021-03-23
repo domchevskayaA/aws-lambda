@@ -1,0 +1,56 @@
+org: domchevska
+app: bartender
+service: bartender-lambda
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+  lambdaHashingVersion: 20201221
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+        - dynamodb:Scan
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+functions:
+  getAllCocktails:
+    handler: build/handler.getAllCocktails
+    events:
+      - http:
+          path: cocktails/all
+          method: get
+  getCocktailByName:
+    handler: build/handler.getCocktailByName
+    events:
+      - http:
+          path: cocktails
+          method: get
+  saveCocktail:
+    handler: build/handler.saveCocktail
+    events:
+      - http:
+          path: cocktails
+          method: post
+resources:
+      Resources:
+        DynamoDBTable:
+          Type: AWS::DynamoDB::Table
+          Properties:
+            TableName: ${self:provider.environment.DYNAMODB_TABLE}
+            AttributeDefinitions:
+              - AttributeName: name
+                AttributeType: S
+            KeySchema:
+              - AttributeName: name
+                KeyType: HASH
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
