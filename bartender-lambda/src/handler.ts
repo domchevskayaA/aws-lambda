@@ -1,8 +1,6 @@
-'use strict';
 import { Event, Cocktail, requiredAttrs } from "./types";
 import { DynamoDB } from "aws-sdk";
 import { isEqual } from "lodash";
-import { ConfigurationServicePlaceholders } from "aws-sdk/lib/config_service_placeholders";
 
 const db = new DynamoDB.DocumentClient();
 const table = process.env.DYNAMODB_TABLE as string;
@@ -11,12 +9,12 @@ const uid = () => Math.random().toString(36).substr(2, 9);
 
 export const saveCocktail = async (event: Event<Cocktail>) => {
   try {
-    // if (!event || !event.body) {
-    //   return {
-    //     statusCode: 400,
-    //     message: "Request body can't be empty.",
-    //   }
-    // }
+    if (!event || !event.body) {
+      return {
+        statusCode: 400,
+        message: "Request body can't be empty.",
+      }
+    }
     const data = event.body ? JSON.parse(event.body) : event;
 
     console.log(isEqual(Object.keys(data).sort(), requiredAttrs.sort()));
