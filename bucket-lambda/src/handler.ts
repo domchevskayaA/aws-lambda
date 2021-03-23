@@ -11,7 +11,7 @@ export const s3processor = async (event) => {
     console.log(event, queueUrl, "queueUrl")
 
     await Promise.all(
-        event.record.map(async record => {
+        event.Records.map(async record => {
             try {
                 const text = await s3.getObject({
                     Bucket: record.s3.bucket.name,
