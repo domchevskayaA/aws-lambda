@@ -1,6 +1,6 @@
 org: domchevska
 app: bartender
-service: bartender-lambda
+service: api-dynamodb-service
 frameworkVersion: '2'
 
 provider:
@@ -22,19 +22,19 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 functions:
   getAllCocktails:
-    handler: build/handler.getAllCocktails
+    handler: ../../build/getAllCocktails/getAllCocktails
     events:
       - http:
           path: cocktails/all
           method: get
   getCocktailByName:
-    handler: build/handler.getCocktailByName
+    handler: ../../build/getCocktailByName/getCocktailByName
     events:
       - http:
           path: cocktails
           method: get
   saveCocktail:
-    handler: build/handler.saveCocktail
+    handler: ../../build/saveCocktail/saveCocktail
     events:
       - http:
           path: cocktails

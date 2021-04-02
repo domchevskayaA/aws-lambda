@@ -7,10 +7,13 @@
   "license": "ISC",
   "scripts": {
     "build": "tsc",
-    "deploy": "npm run build && sls deploy"
+    "deploy:sqs": "yarn build && cd src/qs-dynamodb-service && sls deploy",
+    "deploy:s3": "yarn build && cd s3-sqs-service && sls deploy",
+    "deploy:api": "yarn build && cd src/api-dynamodb-service && sls deploy"
   },
   "dependencies": {
-    "aws-sdk": "^2.868.0"
+    "aws-sdk": "^2.868.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.72",

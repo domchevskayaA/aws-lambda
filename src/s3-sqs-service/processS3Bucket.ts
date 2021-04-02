@@ -1,7 +1,6 @@
-import { S3, SQS } from "aws-sdk";
+import { getObject } from "../utils/s3-lib";
+import { sendMessage } from "../utils/sqs-lib";
 
-const s3 = new S3();
-const sqs = new SQS({ apiVersion: "2012-11-05" });
 const batchSize = 25;
 const queueUrl: string = process.env.QUEUE_URL as string;
 
@@ -13,10 +12,10 @@ export const s3processor = async (event) => {
     await Promise.all(
         event.Records.map(async record => {
             try {
-                const text = await s3.getObject({
+                const text = await getObject({
                     Bucket: record.s3.bucket.name,
                     Key: record.s3.object.key
-                }).promise();
+                });
 
                 const jsonData = JSON.parse(text.Body?.toString('utf-8') || '');
                 const batches = splitToBatches(jsonData);
@@ -50,10 +49,10 @@ const sendToSQS = async (batches: any[]) => {
             try {
                 batchCount++;
                 console.log("trying batch", batchCount);
-                const result = await sqs.sendMessage({
+                const result = await sendMessage({
                     QueueUrl: queueUrl,
                     MessageBody: JSON.stringify(items)
-                }).promise();
+                });
                 console.log("result", result);
             } catch (error) {
                 console.error(error);

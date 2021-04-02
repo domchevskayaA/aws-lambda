@@ -1,6 +1,6 @@
 org: domchevska
 app: bartender
-service: s3-lambda
+service: s3-sqs-service
 frameworkVersion: '2'
 
 custom:
@@ -26,7 +26,7 @@ provider:
       Resource: "arn:aws:sqs:*:*:S3Queue"
 functions:
   process-s3-to-sqs:
-    handler: build/handler.s3processor
+    handler: ../../build/processS3Bucket.main
     events:
         - s3: ${self:custom.bucket}
 resources:
