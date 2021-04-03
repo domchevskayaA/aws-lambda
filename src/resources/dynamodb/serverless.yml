@@ -1,0 +1,30 @@
+service: serverless-dynamodb-table
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  stage: dev
+  region: us-east-1
+
+resources:
+  Resources:
+    DynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: cocktails-serverless-table-${self:provider.stage}
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+  Outputs:
+    DynamoDbTable:
+      Value:
+        "Ref": DynamoDbTable
+      Export:
+        Name: cocktails-serverless-table-${self:provider.stage}
