@@ -1,6 +1,6 @@
 import { saveInDynamoDb } from './save';
 
-export async function main(event) {
+export const processSqsMessage = async (event) => {
     console.log("processSqsMessage lambda event: ", event);
 
     await Promise.all(

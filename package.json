@@ -6,19 +6,18 @@
   "author": "Olena Domchevska",
   "license": "ISC",
   "scripts": {
-    "build": "tsc",
-    "deploy:sqs": "yarn build && cd src/qs-dynamodb-service && sls deploy",
-    "deploy:s3": "yarn build && cd s3-sqs-service && sls deploy",
-    "deploy:api": "yarn build && cd src/api-dynamodb-service && sls deploy"
+    "deploy:sqs": "cd src/qs-dynamodb-service && tsc && sls deploy",
+    "deploy:s3": "cd src/s3-sqs-service && tsc && sls deploy",
+    "deploy:api": "cd src/api-dynamodb-service && tsc && sls deploy"
   },
   "dependencies": {
-    "aws-sdk": "^2.868.0",
-    "lodash": "^4.17.21"
+    "aws-sdk": "^2.868.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.72",
     "@types/node": "^14.14.35",
     "serverless-plugin-typescript": "^1.1.9",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "serverless-bundle": "^4.2.1"
   }
 }

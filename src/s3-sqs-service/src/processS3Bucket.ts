@@ -1,5 +1,5 @@
-import { getObject } from "../utils/s3-lib";
-import { sendMessage } from "../utils/sqs-lib";
+import { getObject } from "../../utils/s3-lib";
+import { sendMessage } from "../../utils/sqs-lib";
 
 const batchSize = 25;
 const queueUrl: string = process.env.QUEUE_URL as string;
@@ -42,7 +42,7 @@ const sendToSQS = async (batches: any[]) => {
 
     await Promise.all(
         batches.map(async item => {
-            const items: object[] = [];
+            const items: any[] = [];
 
             items.push({ ...item, id: uid() });
 

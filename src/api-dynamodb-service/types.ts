@@ -10,5 +10,3 @@ export interface Cocktail {
     size: string;
     liquor: string;
 }
-
-export const requiredAttrs = ["name", "taste", "alcohol", "size", "liquor"]

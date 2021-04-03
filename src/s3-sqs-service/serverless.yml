@@ -1,19 +1,21 @@
-org: domchevska
-app: bartender
 service: s3-sqs-service
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 custom:
-  bucket: olena-domchevska-lambda
+  bucket: olena-domchevska-s3-bucket
 
 provider:
   name: aws
   runtime: nodejs12.x
   stage: dev
   region: us-east-1
-  lambdaHashingVersion: 20201221
+  memorySize: 128
+  tracing:
+    lambda: true
+
   environment:
-    QUEUE_URL: { Ref: S3Queue }
+    QUEUE_URL:
+      "Fn::ImportValue": "cocktails-serverless-queue-${self:provider.stage}"
     REGION: ${self:provider.region}
   iamRoleStatements:
     - Effect: Allow
@@ -23,15 +25,17 @@ provider:
     - Effect: Allow
       Action:
         - "sqs:SendMessage"
-      Resource: "arn:aws:sqs:*:*:S3Queue"
+      Resource: arn:aws:sqs:*:*:cocktails-serverless-queue-${self:provider.stage}
+
+plugins:
+  - serverless-bundle
+
 functions:
-  process-s3-to-sqs:
-    handler: ../../build/processS3Bucket.main
+  processS3Bucket:
+    handler: build/s3-sqs-service/src/processS3Bucket.s3processor
     events:
-        - s3: ${self:custom.bucket}
-resources:
-      Resources:
-        S3Queue: 
-          Type: "AWS::SQS::Queue"
-          Properties: 
-            QueueName: "S3Queue"
+      - s3:
+          bucket: ${self:custom.bucket}
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .json

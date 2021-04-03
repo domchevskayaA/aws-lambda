@@ -9,8 +9,9 @@ provider:
   stage: dev
   region: us-east-1
   lambdaHashingVersion: 20201221
-  environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  environment:    
+    DYNAMODB_TABLE:
+      "Fn::ImportValue": "cocktails-serverless-table-${self:provider.stage}"
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -19,38 +20,27 @@ provider:
         - dynamodb:GetItem
         - dynamodb:Scan
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/cocktails-serverless-table-${self:provider.stage}"
+
+plugins:
+  - serverless-bundle
+
 functions:
   getAllCocktails:
-    handler: ../../build/getAllCocktails/getAllCocktails
+    handler: build/api-dynamodb-service/src/getAllCocktails.getAllCocktails
     events:
       - http:
           path: cocktails/all
           method: get
   getCocktailByName:
-    handler: ../../build/getCocktailByName/getCocktailByName
+    handler: build/api-dynamodb-service/src/getCocktailByName.getCocktailByName
     events:
       - http:
           path: cocktails
           method: get
   saveCocktail:
-    handler: ../../build/saveCocktail/saveCocktail
+    handler: build/api-dynamodb-service/src/saveCocktail.saveCocktail
     events:
       - http:
           path: cocktails
           method: post
-resources:
-      Resources:
-        DynamoDBTable:
-          Type: AWS::DynamoDB::Table
-          Properties:
-            TableName: ${self:provider.environment.DYNAMODB_TABLE}
-            AttributeDefinitions:
-              - AttributeName: name
-                AttributeType: S
-            KeySchema:
-              - AttributeName: name
-                KeyType: HASH
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1

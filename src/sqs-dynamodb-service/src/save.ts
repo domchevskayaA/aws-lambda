@@ -1,4 +1,4 @@
-import db from "../utils/dynamodb-lib";
+import db from "../../utils/dynamodb-lib";
 
 export const saveInDynamoDb = async (item_data, tableName) => {
     // Set up the params object for the DDB call
@@ -22,7 +22,7 @@ const buildDynamoDbParams = (item_data, tableName) => {
     dynamoDbParams.RequestItems[tableName] = [];
 
     item_data.forEach(item => {
-        for (let key of Object.keys(item)) {
+        for (const key of Object.keys(item)) {
             // An AttributeValue may not contain an empty string
             if (item[key] === '')
                 delete item[key];

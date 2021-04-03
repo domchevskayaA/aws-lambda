@@ -1,7 +1,6 @@
-import { Event, Cocktail, requiredAttrs } from "../types";
+import { Event, Cocktail } from "../types";
 import { uid } from "../../utils/uid";
 import db from "../../utils/dynamodb-lib";
-import { isEqual } from "lodash";
 
 export const saveCocktail = async (event: Event<Cocktail>) => {
     try {
@@ -12,11 +11,12 @@ export const saveCocktail = async (event: Event<Cocktail>) => {
         }
       }
       const data = event.body ? JSON.parse(event.body) : event;
+      const { name, taste, alcohol, size, liquor } = data;
   
-      if (!isEqual(Object.keys(data).sort(), requiredAttrs.sort())) {
+      if (!name || !taste || !alcohol || !size || !liquor) {
         return {
           statusCode: 400,
-          body: `Request body should contain following properties: ${requiredAttrs.join(', ')}.`
+          body: `Request body should contain following properties: "name", "taste", "alcohol", "size", "liquor".`
         }
       }
   
