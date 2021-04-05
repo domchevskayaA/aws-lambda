@@ -6,7 +6,7 @@
   "author": "Olena Domchevska",
   "license": "ISC",
   "scripts": {
-    "deploy:sqs": "cd src/qs-dynamodb-service && tsc && sls deploy",
+    "deploy:sqs": "cd src/sqs-dynamodb-service && tsc && sls deploy",
     "deploy:s3": "cd src/s3-sqs-service && tsc && sls deploy",
     "deploy:api": "cd src/api-dynamodb-service && tsc && sls deploy"
   },

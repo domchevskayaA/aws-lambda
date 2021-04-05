@@ -8,7 +8,7 @@ provider:
 
 resources:
   Resources:
-    DynamoDBTable:
+    DynamoDbTable:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:

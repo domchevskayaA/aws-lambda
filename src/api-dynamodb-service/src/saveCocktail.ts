@@ -2,6 +2,8 @@ import { Event, Cocktail } from "../types";
 import { uid } from "../../utils/uid";
 import db from "../../utils/dynamodb-lib";
 
+const table = process.env.DYNAMODB_TABLE as string;
+
 export const saveCocktail = async (event: Event<Cocktail>) => {
     try {
       if (!event || !event.body) {
@@ -21,7 +23,10 @@ export const saveCocktail = async (event: Event<Cocktail>) => {
       }
   
       const item = { ...data, id: uid() };
-      await db.put({ Item: item })
+      await db.put({
+        TableName: table,
+        Item: item
+      })
       return {
         statusCode: 201,
         body: JSON.stringify({ Item: item })
